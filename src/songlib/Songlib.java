@@ -13,13 +13,26 @@ import java.io.File;
 
 public class Songlib{
 	LinkedList<Song> slist = new LinkedList<Song>();
+	
+	public String[] printArray() {
+		Song s = slist.getFirst();
+		String [] listdata = new String[15];
+		int count = 0;
+		while (s != null){
+			listdata[count] = (s.getName().toString());
+			s = slist.iterator().next();
+			count++;
+		}
+		return listdata;
+	}
 		
 	public static void main(String[] args){
 		Songlib sl = new Songlib();
 		Song so = new Song ("as","hdhd");
 		sl.slist.add(so);
 		String str = sl.slist.getFirst().name;
-		System.out.println(str);
+	//	sl.slist.
+	//	System.out.println(str);
 		
 		/*testing file*/
 		FileOutputStream fop = null;

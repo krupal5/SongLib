@@ -7,7 +7,7 @@ public class Song implements Comparable<Song> {
 	String name;
 	String artists;
 	String album;
-	int Year;
+	String Year;
 	@Override
 	public int compareTo(Song s){
 		String str = s.name;
@@ -40,14 +40,14 @@ public class Song implements Comparable<Song> {
 	public String getAlbum(){
 		return this.album;
 	}
-	public int getYear(){
+	public String getYear(){
 		return this.Year;
 	}
-	public void setAlbum(Song s){
-		this.album = s.album;
+	public void setAlbum(String s){
+		this.album = s;
 	}
-	public void setYear(Song s){
-		this.Year = s.Year;
+	public void setYear(String s){
+		this.Year = s;
 	}
 
 }
