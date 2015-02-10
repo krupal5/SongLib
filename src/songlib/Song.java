@@ -49,5 +49,14 @@ public class Song implements Comparable<Song> {
 	public void setYear(String s){
 		this.Year = s;
 	}
+	
+	@Override
+	public boolean equals(Object other){
+		if(other instanceof Song){
+			Song os = (Song)other;
+			return os.name.equals(this.name) && os.artists.equals(this.artists);
+		}
+		return false;
+	}
 
 }
