@@ -85,7 +85,7 @@ public class SongGUI extends tmp {
 		 display = new JLabel("display");
 				
 		//Create List
-		list = new JList(slist.toArray());
+		list = new JList();
 		
 		// Set the list to single selection mode, so no more than one field can be selected at the same time
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -224,7 +224,7 @@ public class SongGUI extends tmp {
 			slist.add(tmp);
 			//System.out.println("YAY !!! it works" + tmp.name);
 			str1 = slist.toArray();
-			list.setListData(slist.toArray(new Object[0]));
+			list.setListData(slist.toArray());
 			
 			
 		}
@@ -238,22 +238,22 @@ public class SongGUI extends tmp {
 	private class DeleteBTNListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if(list.getSelectedIndex() != -1) {
+			/*if(list.getSelectedIndex() != -1) {
 				while(!slist.isEmpty()){
-				if((list.getSelectedValue().equals(slist.getFirst().name))){
+				if((list.getSelectedValue().equals(slist.))){
 					slist.remove();
 				}
 				slist.iterator().next();
 				}
 				
-			}
+			}*/
 		}
 	}
 	public static void main(String[] args){
 
 		new SongGUI();
 	}
-	
+	/*
 	@Override
 	public String[] toArray(){
 		Song s = slist.getFirst();
@@ -266,7 +266,7 @@ public class SongGUI extends tmp {
 		}
 		return listdata;
 	}
-	
+	*/
 	public String[] parray(Object[] Array) {
 		Object[] oarray = Array;
 		String[] stringArray = Arrays.copyOf(oarray,oarray.length, String[].class);
