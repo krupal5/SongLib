@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Song implements Comparable<Song> {
+public class Song extends LinkedList implements Comparable<Song> {
 	String name;
 	String artists;
 	String album;
@@ -58,5 +58,5 @@ public class Song implements Comparable<Song> {
 		}
 		return false;
 	}
-
+	
 }

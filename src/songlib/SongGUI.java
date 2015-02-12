@@ -10,6 +10,7 @@
 package songlib;
 
 import java.awt.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -17,17 +18,19 @@ import java.awt.Container;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.ListIterator;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.File;
+import java.util.ListIterator;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class SongGUI extends Songlib {
+public class SongGUI extends tmp {
 		/* flow : need to declare outside and initialize inside constructor
 		 * JFrame frame;
 		 * JButton button1, button2;
@@ -35,7 +38,8 @@ public class SongGUI extends Songlib {
 		 */
 	JFrame frame;
 	JButton add, delete, edit;
-	LinkedList<Song> slist = new LinkedList<Song>();
+	tmp<Song> slist = new tmp<Song>();
+	ListIterator<Song> literator = slist.listIterator();
 	
 	JPanel bPanel, tNamePanel, tArtistPanel, tAlbumPanel, tYearPanel,  dPanel, labelP, listP, headP, bothP;
 
@@ -150,7 +154,7 @@ public class SongGUI extends Songlib {
 		// putting stuff in list
 		Object[] oarray = slist.toArray(new Object[10]);
 		//System.out.println(oarray.toString());		
-		pArray(oarray);
+		//pArray(oarray);
 		
 		list.addListSelectionListener(new ListListener());
 		/*listModel = new DefaultListModel();
@@ -213,12 +217,15 @@ public class SongGUI extends Songlib {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Song tmp = new Song(nameTF.getText(),artistTF.getText());
+			Object[] str1 = new Object[10];
+			int count = 0;
 			tmp.setAlbum(albumTF.getText());
 			tmp.setYear(yearTF.getText());
 			slist.add(tmp);
-			System.out.println("YAY !!! it works" + tmp.name);
+			//System.out.println("YAY !!! it works" + tmp.name);
+			str1 = slist.toArray();
+			list.setListData(slist.toArray(new Object[0]));
 			
-			//pArray(oarray);
 			
 		}
 	}
@@ -247,7 +254,20 @@ public class SongGUI extends Songlib {
 		new SongGUI();
 	}
 	
-	public String[] pArray(Object[] Array) {
+	@Override
+	public String[] toArray(){
+		Song s = slist.getFirst();
+		String[] listdata = new String[15];
+		int count = 0;
+		while (literator.hasNext()){
+			//listdata[count] = (s.getName().toString());
+			listdata[count] = literator.next().name;
+			count++;
+		}
+		return listdata;
+	}
+	
+	public String[] parray(Object[] Array) {
 		Object[] oarray = Array;
 		String[] stringArray = Arrays.copyOf(oarray,oarray.length, String[].class);
 		/*for (int i = 0; i < slist.size(); i++) {
