@@ -17,10 +17,10 @@ public class tmp<E> extends LinkedList {
 	
 	@Override
 	public String[] toArray(){
-		Song s  = (Song) getFirst();
+		//Song s  = (Song) getFirst();
 		ListIterator<Song> listIterator = listIterator();
 		String[] s1 = new String[3];
-		s1[0] = s.name;
+		//s1[0] = s.name;
 		
 		s1[1] = listIterator.next().name;
 		s1[2] = listIterator.next().name;
