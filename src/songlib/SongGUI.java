@@ -219,16 +219,16 @@ public class SongGUI extends tmp {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Song tmp = new Song(nameTF.getText(),artistTF.getText());
-			String[] str1 = new String[10];
-			String[] sName = new String[10];
-			String[] sAlbum = new String[10];
-			String[] sArtist = new String[10];
-			String[] sYear = new String[10];
+			String[] str1 = new String[100];
+			String[] sName = new String[100];
+			String[] sAlbum = new String[100];
+			String[] sArtist = new String[100];
+			String[] sYear = new String[100];
 		
 			
 			tmp.setAlbum(albumTF.getText());
 			tmp.setYear(yearTF.getText());
-			String[] str2 = new String[10];
+//			String[] str2 = new String[10];
 			slist.add(tmp);
 			
 			
@@ -240,24 +240,33 @@ public class SongGUI extends tmp {
 			str2[i] = str1[i];
 				}*/
 			
-			str1 = slist.toArray(slist);
-			for(int i =0; slist.toArray(slist).length != i ; i++){
-				str2[i] = slist.toArray(slist)[i];
-			}
-			for(int count =0; str2.length != count;count = count +4){
-				sName[count] = str2[count];
-				sArtist[count] = str2[count+1];
-				sAlbum[count] = str2[count+2];
-				sYear[count] = str2[count+3];
+			//str1 = slist.toArray(slist);
+			//for(int i =0; slist.toArray(slist).length != i ; i++){
+				//str1[i] = slist.toArray(slist)[i];
+			//}
+			
+			str1 = Arrays.copyOf(slist.toArray(slist), slist.toArray(slist).length);
+	//		int j = str1.length;
+			//System.out.println(j);
+			
+			for(int count =0; str1.length != count;count+=4){
+				sName[count] = str1[count];
+				sArtist[count] = str1[count+1];
+				sAlbum[count] = str1[count+2];
+				sYear[count] = str1[count+3];
 			}
 			//str2[count] = str1[count];
 			//str2[1] = str1[1];
-			
+			//for(int i =0,count = 0; 10 < count; count = count +4 , i++){
+				//sName[i] = str1[count];
+			//}
+			//System.out.println(sName[0]);
 			list.setListData(sName);
+			System.out.println(sName[1]);
 			
 			
 			//System.out.println(str2[count]);
-			count++;
+			//count++;
 
 		}
 	}
@@ -278,14 +287,6 @@ public class SongGUI extends tmp {
 				String[] str2 = new String[10];
 				slist.add(tmp);
 				
-				
-				//Song tmp2 = new Song(nameTF.getText(), artistTF.getText());
-				//slist.add(tmp2);
-				//System.out.println("YAY !!! it works" + tmp.name);
-							
-				/*for (int i = 0; str2.length != i;i++){
-				str2[i] = str1[i];
-					}*/
 				
 				str1 = slist.toArray(slist);
 				str2[count] = str1[count];

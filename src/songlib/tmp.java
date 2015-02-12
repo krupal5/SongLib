@@ -13,12 +13,12 @@ public class tmp<E> extends LinkedList {
 		tmp t2= t1;
 		Song s1;
 		ListIterator<Song> listIter = t2.listIterator();
-		String[] str1 = new String[10];
+		String[] str1 = new String[100];
 		//s1[0] = s.name;
 		//String[] str2 = new String[5];
 		//String[] str3 = new String[5];
 		//String[] str4 = new String[5];
-		for(int count = -3; listIter.hasNext() ; count++){
+		for(int count = -3; listIter.hasNext() ; count+=4){
 			s1 = listIter.next();
 			str1[count+3] = s1.name;
 			str1[count+4] = s1.artists;
