@@ -41,6 +41,8 @@ public class SongGUI extends tmp {
 	tmp<Song> slist = new tmp<Song>();
 	ListIterator<Song> literator = slist.listIterator();
 	
+	int count = 0;
+	
 	JPanel bPanel, tNamePanel, tArtistPanel, tAlbumPanel, tYearPanel,  dPanel, labelP, listP, headP, bothP;
 
 	JLabel name, artist, album, year,display;
@@ -152,7 +154,7 @@ public class SongGUI extends tmp {
 		delete.addActionListener(new DeleteBTNListener());
 		
 		// putting stuff in list
-		Object[] oarray = slist.toArray(new Object[10]);
+		//Object[] oarray = slist.toArray(new Object[10]);
 		//System.out.println(oarray.toString());		
 		//pArray(oarray);
 		
@@ -217,20 +219,91 @@ public class SongGUI extends tmp {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Song tmp = new Song(nameTF.getText(),artistTF.getText());
-			Object[] str1 = new Object[10];
-			int count = 0;
+			String[] str1 = new String[10];
+			String[] sName = new String[10];
+			String[] sAlbum = new String[10];
+			String[] sArtist = new String[10];
+			String[] sYear = new String[10];
+		
+			
 			tmp.setAlbum(albumTF.getText());
 			tmp.setYear(yearTF.getText());
+			String[] str2 = new String[10];
 			slist.add(tmp);
+			
+			
+			//Song tmp2 = new Song(nameTF.getText(), artistTF.getText());
+			//slist.add(tmp2);
 			//System.out.println("YAY !!! it works" + tmp.name);
-			str1 = slist.toArray();
-			list.setListData(slist.toArray());
+						
+			/*for (int i = 0; str2.length != i;i++){
+			str2[i] = str1[i];
+				}*/
+			
+			str1 = slist.toArray(slist);
+			for(int i =0; slist.toArray(slist).length != i ; i++){
+				str2[i] = slist.toArray(slist)[i];
+			}
+			for(int count =0; str2.length != count;count = count +4){
+				sName[count] = str2[count];
+				sArtist[count] = str2[count+1];
+				sAlbum[count] = str2[count+2];
+				sYear[count] = str2[count+3];
+			}
+			//str2[count] = str1[count];
+			//str2[1] = str1[1];
+			
+			list.setListData(sName);
 			
 			
+			//System.out.println(str2[count]);
+			count++;
+
 		}
 	}
 	private class EditBTNListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			
+			if(list.getSelectedIndex() != -1){
+				//String s1 = new String();
+				//s1 = list.getSelectedValue().toString();
+				//if(list.getSelectedValue().equals(slist.contains(s1))){
+					
+			//	}
+				Song tmp = new Song(nameTF.getText(),artistTF.getText());
+				String[] str1 = new String[10];
+				
+				tmp.setAlbum(albumTF.getText());
+				tmp.setYear(yearTF.getText());
+				String[] str2 = new String[10];
+				slist.add(tmp);
+				
+				
+				//Song tmp2 = new Song(nameTF.getText(), artistTF.getText());
+				//slist.add(tmp2);
+				//System.out.println("YAY !!! it works" + tmp.name);
+							
+				/*for (int i = 0; str2.length != i;i++){
+				str2[i] = str1[i];
+					}*/
+				
+				str1 = slist.toArray(slist);
+				str2[count] = str1[count];
+				//str2[1] = str1[1];
+				
+				
+				//list.setListData(slist.toArray(slist));
+				String s1 = new String();
+				s1 = list.getSelectedValue().toString();
+				//if(list.getSelectedValue().equals(slist.contains(s1))){
+					slist.remove(list.getSelectedIndex());
+				//System.out.println(str2[count]);
+				count++;
+				
+				
+				list.setListData(slist.toArray(slist));
+			}
+			
 			// TODO Auto-generated method stub
 			
 		}
@@ -238,7 +311,7 @@ public class SongGUI extends tmp {
 	private class DeleteBTNListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			/*if(list.getSelectedIndex() != -1) {
+		/*	if(list.getSelectedIndex() != -1) {
 				while(!slist.isEmpty()){
 				if((list.getSelectedValue().equals(slist.))){
 					slist.remove();
@@ -247,6 +320,14 @@ public class SongGUI extends tmp {
 				}
 				
 			}*/
+			if(list.getSelectedIndex() != -1){
+				String s1 = new String();
+				s1 = list.getSelectedValue().toString();
+				//if(list.getSelectedValue().equals(slist.contains(s1))){
+					slist.remove(list.getSelectedIndex());
+			//	}
+				list.setListData(slist.toArray(slist));
+			}
 		}
 	}
 	public static void main(String[] args){

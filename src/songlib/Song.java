@@ -8,6 +8,7 @@ public class Song extends LinkedList implements Comparable<Song> {
 	String artists;
 	String album;
 	String Year;
+	int count = 0;
 	@Override
 	public int compareTo(Song s){
 		String str = s.name;

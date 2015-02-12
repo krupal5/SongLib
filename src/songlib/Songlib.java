@@ -57,11 +57,10 @@ public class Songlib extends tmp{
 		t2.add(so);
 		t2.add(s1);
 		t2.add(s2);
-		str1 = t2.toArray();
+		//str1 = t2.toArray();
 		System.out.println(str1[0]);
 		System.out.println(str1[1]);
 		System.out.println(str1[2]);
-		
 		
 		/*testing file*/
 		FileOutputStream fop = null;
