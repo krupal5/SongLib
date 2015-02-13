@@ -10,7 +10,6 @@
 package songlib;
 
 import java.awt.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -19,11 +18,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Scanner;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ListIterator;
 
 import javax.swing.*;
@@ -215,7 +222,7 @@ public class SongGUI extends tmp {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// TODO Auto-generated method stub
-				loaddetails();
+				//loaddetails();
 			//String selection = (String) list.getSelectedValue();
 			//nameTF.setText(selection);
 		}
@@ -251,6 +258,42 @@ public class SongGUI extends tmp {
 
 		}
 	}
+	
+	/* aarjav method*/ 
+	public boolean loadSongsFromFile(String pathname){
+		boolean success = false;
+		try(BufferedInputStream file = new BufferedInputStream(new FileInputStream(pathname));
+		ObjectInput in = new ObjectInputStream(file);){
+		//songs.addAll((Collection<? extends Song>) in.readObject());
+		Collections.addAll(songs, (Song[])in.readObject());
+		success = true;
+		} catch (FileNotFoundException e) {
+		// this is expected first time this is run.
+		} catch (IOException e) {
+		e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		}
+		return success;
+		}
+	/*This one two aarjavs*/
+	public boolean saveToFile(String path) {
+		boolean success = false;
+		//System.out.println(path);
+		try(BufferedOutputStream file = new BufferedOutputStream(new FileOutputStream(path, false));
+		ObjectOutput out = new ObjectOutputStream(file)){
+		out.writeObject((Song[])songs.toArray(new Song[0]));
+		success = true;
+		} catch (FileNotFoundException e) {
+		e.printStackTrace();
+		} catch (IOException e) {
+		e.printStackTrace();
+		} catch (Exception e){
+		e.printStackTrace();
+		System.out.print("oh no!");
+		}
+		return success;
+		}
 	private class EditBTNListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			
@@ -282,7 +325,7 @@ public class SongGUI extends tmp {
 		/*	if(list.getSelectedIndex() != -1) {
 				while(!slist.isEmpty()){
 				if((list.getSelectedValue().equals(slist.))){
-					slist.remove();
+					slist.remove();pi
 				}
 				slist.iterator().next();d
 				}
@@ -307,10 +350,33 @@ public class SongGUI extends tmp {
 		}
 	}
 
-	public static void main(String[] args){
+	public void loadFromFile(String filename) throws IOException{
+		boolean success = false;
+		try(BufferedInputStream file = new BufferedInputStream(new FileInputStream(filename));
+				ObjectInput in = new ObjectInputStream(file);){
+			Collections.addAll(Song, (Song[]))
+		}
 
-		new SongGUI();
 	}
+	public static void main(String[] args) throws IOException{
+
+		SongGUI sg = new SongGUI();
+		
+		
+		FileWriter fwriter = new FileWriter("retrieve.txt",true);
+		PrintWriter outputFile = new PrintWriter("retrieve.txt");
+		outputFile.println();
+		File file1 = new File("retrieve.txt");
+		try{
+			Scanner fop = new Scanner(file1);
+			
+		}catch(Exception e){
+			System.out.println(e);
+		}
+		//PrintWriter writer = new PrintWriter("retrive.txt","UTF-8");
+		
+	}
+	
 	public void copying(){
 		str1 = Arrays.copyOf(slist.toArray(slist), slist.toArray(slist).length);
 		
