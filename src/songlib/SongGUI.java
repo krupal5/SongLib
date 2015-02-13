@@ -215,7 +215,7 @@ public class SongGUI extends tmp {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// TODO Auto-generated method stub
-		//	getSelected();
+				loaddetails();
 			//String selection = (String) list.getSelectedValue();
 			//nameTF.setText(selection);
 		}
@@ -255,37 +255,27 @@ public class SongGUI extends tmp {
 		public void actionPerformed(ActionEvent e) {
 			
 			if(list.getSelectedIndex() != -1){
-				loaddetails();
+				//loaddetails();
+				
 				Song tmp = new Song(nameTF.getText(),artistTF.getText());
-				String[] str1 = new String[10];
 				
 				tmp.setAlbum(albumTF.getText());
 				tmp.setYear(yearTF.getText());
-				String[] str2 = new String[10];
 				slist.add(tmp);
+
+				//String[] str2 = new String[10];
 				
+				slist.remove(list.getSelectedIndex());
+				copying();
 				
-				str1 = slist.toArray(slist);
-				str2[count] = str1[count];
-				//str2[1] = str1[1];
-				
-				
-				//list.setListData(slist.toArray(slist));
-				String s1 = new String();
-				s1 = list.getSelectedValue().toString();
-				//if(list.getSelectedValue().equals(slist.contains(s1))){
-					slist.remove(list.getSelectedIndex());
-				//System.out.println(str2[count]);
-				count++;
-				
-				
-				list.setListData(slist.toArray(slist));
+				list.setListData(sName);
 			}
 			
 			// TODO Auto-generated method stub
 			
 		}
 	}
+	
 	private class DeleteBTNListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
@@ -366,9 +356,16 @@ public class SongGUI extends tmp {
 	}
 	*/
 	public void loaddetails(){
-		String s1 = (String) list.getSelectedValue();
-		System.out.println(s1);
 		
+		String s1 = sName[list.getSelectedIndex()];
+		String a1 = sArtist[list.getSelectedIndex()];
+		String al1 = sAlbum[list.getSelectedIndex()];
+		String y1 = sYear[list.getSelectedIndex()];
+		
+		nameTF.setText(s1);
+		artistTF.setText(a1);
+		albumTF.setText(al1);
+		yearTF.setText(y1);
 	}
 	public String[] parray(Object[] Array) {
 		Object[] oarray = Array;
