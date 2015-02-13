@@ -357,15 +357,11 @@ public class SongGUI extends tmp {
 	*/
 	public void loaddetails(){
 		
-		String s1 = sName[list.getSelectedIndex()];
-		String a1 = sArtist[list.getSelectedIndex()];
-		String al1 = sAlbum[list.getSelectedIndex()];
-		String y1 = sYear[list.getSelectedIndex()];
-		
-		nameTF.setText(s1);
-		artistTF.setText(a1);
-		albumTF.setText(al1);
-		yearTF.setText(y1);
+		int counting = list.getSelectedIndex(); 
+		nameTF.setText(sName[counting]);
+		artistTF.setText(sArtist[counting]); 
+		albumTF.setText(sAlbum[counting]);
+		yearTF.setText(sYear[counting]);
 	}
 	public String[] parray(Object[] Array) {
 		Object[] oarray = Array;
