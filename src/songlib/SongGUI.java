@@ -241,17 +241,7 @@ public class SongGUI extends tmp {
 			slist.add(tmp);
 			Collections.sort(slist, Collections.reverseOrder());
 			
-			str1 = Arrays.copyOf(slist.toArray(slist), slist.toArray(slist).length);
-			
-			
-			for(int count = 0,e1 = 0; str1.length != count;count+=4, e1++){
-				sName[e1] = str1[count];
-				sArtist[e1] = str1[count+1];
-				sAlbum[e1] = str1[count+2];
-				sYear[e1] = str1[count+3];
-				//System.out.println(sArtist[e1]);
-			}
-		
+		copying();
 			list.setListData(sName);
 			//System.out.println(sName[1]);
 			
@@ -322,16 +312,7 @@ public class SongGUI extends tmp {
 				//System.out.println(x);
 			}
 				slist.remove(list.getSelectedIndex());
-				str1 = Arrays.copyOf(slist.toArray(slist), slist.toArray(slist).length);
-				
-				
-				for(int count = 0,e1 = 0; str1.length != count;count+=4, e1++){
-					sName[e1] = str1[count];
-					sArtist[e1] = str1[count+1];
-					sAlbum[e1] = str1[count+2];
-					sYear[e1] = str1[count+3];
-					//System.out.println(sArtist[e1]);
-				}
+				copying();
 			list.setListData(sName);
 		}
 	}
@@ -339,6 +320,18 @@ public class SongGUI extends tmp {
 	public static void main(String[] args){
 
 		new SongGUI();
+	}
+	public void copying(){
+		str1 = Arrays.copyOf(slist.toArray(slist), slist.toArray(slist).length);
+		
+		
+		for(int count = 0,e1 = 0; str1.length != count;count+=4, e1++){
+			sName[e1] = str1[count];
+			sArtist[e1] = str1[count+1];
+			sAlbum[e1] = str1[count+2];
+			sYear[e1] = str1[count+3];
+			//System.out.println(sArtist[e1]);
+		}
 	}
 	/*
 	public boolean duplicate(Song tmp){
