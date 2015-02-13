@@ -1,4 +1,3 @@
-
 /** 
  * Implementation of a Song Library
  * 
@@ -12,30 +11,26 @@ package songlib;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import java.awt.Container;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Scanner;
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
 import java.io.PrintWriter;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.File;
-import java.io.UnsupportedEncodingException;
 import java.util.ListIterator;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
+import java.io.*;
 
 public class SongGUI extends tmp {
 		/* flow : need to declare outside and initialize inside constructor
@@ -44,9 +39,9 @@ public class SongGUI extends tmp {
 		 * 
 		 */
 	JFrame frame;
-	JButton add, delete, edit;
+	JButton add, delete, edit, confirm, cancel;
 	tmp<Song> slist = new tmp<Song>();
-	ListIterator<Song> literator = slist.listIterator();
+	//ListIterator<Song> literator = slist.listIterator();
 	String[] str1 = new String[100];
 	String[] sName = new String[1000];
 	String[] sAlbum = new String[1000];
@@ -59,18 +54,20 @@ public class SongGUI extends tmp {
 
 	JLabel name, artist, album, year,display;
 		
-	JList list;
+	JList<String> list;
 	
 	JTextField nameTF;
 	JTextField artistTF;
 	JTextField albumTF;
 	JTextField yearTF;
 	DefaultListModel listModel;
+	
 	public SongGUI(){
 		/* Then intialize here
 		 * button1 = new button1();
 		 * 
 		 */
+		
 		frame = new JFrame("SongLibrary");
 		
 		frame.setLayout(new BorderLayout());
@@ -78,6 +75,8 @@ public class SongGUI extends tmp {
 		 add = new JButton("Add");
 		 delete = new JButton("Delete");
 		 edit = new JButton("Edit");
+		 confirm = new JButton("Confirm");
+		 cancel = new JButton("Cancel");
 		
 		//Panels
 		 bPanel = new JPanel();// buttons
@@ -96,7 +95,7 @@ public class SongGUI extends tmp {
 		 listP = new JPanel(); // 
 		 headP = new JPanel(); 
 		 bothP = new JPanel();
-		 display = new JLabel("display");
+		 display = new JLabel("Details");
 				
 		//Create List
 		list = new JList();
@@ -137,6 +136,7 @@ public class SongGUI extends tmp {
 		bPanel.add(delete);
 		bPanel.add(edit);
 		
+		
 		// add label to panel
 		//labelP.add(name);
 		//labelP.add(artist);
@@ -146,6 +146,9 @@ public class SongGUI extends tmp {
 		tArtistPanel.add(artist);
 		tAlbumPanel.add(album);
 		tYearPanel.add(year);
+		//dPanel.add(display);
+		dPanel.add(confirm);
+		dPanel.add(cancel);
 		dPanel.add(display);
 		//add textfields to panel
 		tNamePanel.add(nameTF);
@@ -160,10 +163,16 @@ public class SongGUI extends tmp {
 		bothP.add(tAlbumPanel);
 		bothP.add(tYearPanel);
 		
+		//set confirm button to false
+		confirm.setVisible(false);
+		cancel.setVisible(false);
+		
 		// action to button
 		add.addActionListener(new AddBTNListener());
 		edit.addActionListener(new EditBTNListener());
 		delete.addActionListener(new DeleteBTNListener());
+		confirm.addActionListener(new ConfirmBTNListener());
+		cancel.addActionListener(new CancelBTNListener());
 		
 		// putting stuff in list
 		//Object[] oarray = slist.toArray(new Object[10]);
@@ -191,14 +200,27 @@ public class SongGUI extends tmp {
 		
 		// setting up JFrame
 		frame.setSize(new Dimension(900,500));
-		
+		//frame.pack();
 		frame.setVisible(true);
 		
 		frame.setResizable(true);
 		frame.setTitle("Song list");
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//pack();
+		
+		slist.loadFromFile();
+		copying();
+		list.setListData(sName);
+		list.setSelectedIndex(0);
+		
+		frame.addWindowListener(new WindowAdapter(){
+			@Override
+			public void windowClosing(WindowEvent e) {
+				slist.saveToFile();
+				super.windowClosing(e);
+			}
+		});
+		
 		
 	
 	}
@@ -222,7 +244,14 @@ public class SongGUI extends tmp {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// TODO Auto-generated method stub
-				//loaddetails();
+			if(list.getSelectedIndex() != -1){
+			
+			loaddetails();
+			
+			//}else {
+				//list.setSelectedIndex(0);
+				
+			}
 			//String selection = (String) list.getSelectedValue();
 			//nameTF.setText(selection);
 		}
@@ -235,6 +264,9 @@ public class SongGUI extends tmp {
 	private class AddBTNListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
+			confirm.setVisible(false);
+			cancel.setVisible(false);
+			
 			Song tmp = new Song(nameTF.getText(),artistTF.getText());
 			tmp.setAlbum(albumTF.getText());
 			tmp.setYear(yearTF.getText());
@@ -245,11 +277,19 @@ public class SongGUI extends tmp {
 			if(check == false){
 			slist.add(tmp);
 			}*/
+			
+			//String artistHolder = artistTF.;
+			if(alreadyThere(nameTF.getText(), artistTF.getText()) != false && !artistTF.getText().equals(""))
+			{
+			//System.out.println(artistHolder);
 			slist.add(tmp);
 			Collections.sort(slist, Collections.reverseOrder());
 			
-		copying();
+		    copying();
 			list.setListData(sName);
+			list.setSelectedIndex(0);
+			//artistNameHolder = null;
+			}
 			//System.out.println(sName[1]);
 			
 			
@@ -258,66 +298,84 @@ public class SongGUI extends tmp {
 
 		}
 	}
-	
-	/* aarjav method*/ 
-	public boolean loadSongsFromFile(String pathname){
-		boolean success = false;
-		try(BufferedInputStream file = new BufferedInputStream(new FileInputStream(pathname));
-		ObjectInput in = new ObjectInputStream(file);){
-		//songs.addAll((Collection<? extends Song>) in.readObject());
-		Collections.addAll(songs, (Song[])in.readObject());
-		success = true;
-		} catch (FileNotFoundException e) {
-		// this is expected first time this is run.
-		} catch (IOException e) {
-		e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		}
-		return success;
-		}
-	/*This one two aarjavs*/
-	public boolean saveToFile(String path) {
-		boolean success = false;
-		//System.out.println(path);
-		try(BufferedOutputStream file = new BufferedOutputStream(new FileOutputStream(path, false));
-		ObjectOutput out = new ObjectOutputStream(file)){
-		out.writeObject((Song[])songs.toArray(new Song[0]));
-		success = true;
-		} catch (FileNotFoundException e) {
-		e.printStackTrace();
-		} catch (IOException e) {
-		e.printStackTrace();
-		} catch (Exception e){
-		e.printStackTrace();
-		System.out.print("oh no!");
-		}
-		return success;
-		}
 	private class EditBTNListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			
 			if(list.getSelectedIndex() != -1){
-				//loaddetails();
-				
-				Song tmp = new Song(nameTF.getText(),artistTF.getText());
-				
-				tmp.setAlbum(albumTF.getText());
-				tmp.setYear(yearTF.getText());
-				slist.add(tmp);
-
-				//String[] str2 = new String[10];
-				
-				slist.remove(list.getSelectedIndex());
-				copying();
-				
-				list.setListData(sName);
+			loaddetails();
+			confirm.setVisible(true);
+			cancel.setVisible(true);
 			}
+		}
 			
 			// TODO Auto-generated method stub
 			
 		}
+	
+	private class CancelBTNListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			confirm.setVisible(false);
+			cancel.setVisible(false);
+			
+			nameTF.setText(null);
+			artistTF.setText(null);
+			albumTF.setText(null);
+			yearTF.setText(null);
+			
+			display.setText("Details");
+			list.setSelectedIndex(0);
+		}
+		}
+	
+	private class ConfirmBTNListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+			confirm.setVisible(false);
+			cancel.setVisible(false);
+			if(list.getSelectedIndex() != -1){
+				//loaddetails();
+				slist.remove(list.getSelectedIndex());
+				copying();
+				
+				//slist.remove(list.getSelectedIndex());
+				//copying();
+				
+				// TODO Auto-generated method stub
+				Song tmp = new Song(nameTF.getText(),artistTF.getText());
+				tmp.setAlbum(albumTF.getText());
+				tmp.setYear(yearTF.getText());
+			/*	boolean check = duplicate(tmp);
+				if(check == true){
+					System.out.println("its duplicate");
+				}
+				if(check == false){
+				slist.add(tmp);
+				}*/
+				if(alreadyThere(nameTF.getText(), artistTF.getText()) != false && !artistTF.getText().equals(""))
+				{
+				//System.out.println(artistHolder);
+				slist.add(tmp);
+				Collections.sort(slist, Collections.reverseOrder());
+				
+			    copying();
+				list.setListData(sName);
+				//artistNameHolder = null;
+				}
+				
+				nameTF.setText(null);
+				artistTF.setText(null);
+				albumTF.setText(null);
+				yearTF.setText(null);
+				
+				display.setText("Details");
+				list.setSelectedIndex(0);
+				
+			}
+			//list.setListData(sName);
+			// TODO Auto-generated method stub
+			
+		}
 	}
+	
 	
 	private class DeleteBTNListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
@@ -325,12 +383,14 @@ public class SongGUI extends tmp {
 		/*	if(list.getSelectedIndex() != -1) {
 				while(!slist.isEmpty()){
 				if((list.getSelectedValue().equals(slist.))){
-					slist.remove();pi
+					slist.remove();
 				}
 				slist.iterator().next();d
 				}
 				
 			}*/
+			confirm.setVisible(false);
+			cancel.setVisible(false);
 			if(list.getSelectedIndex() != -1){
 				/*String s1 = new String();
 				s1 = list.getSelectedValue().toString();
@@ -343,40 +403,27 @@ public class SongGUI extends tmp {
 				}*/
 				//int x = list.getSelectedIndex();
 				//System.out.println(x);
-			}
+			//}
 				slist.remove(list.getSelectedIndex());
 				copying();
+				
+				nameTF.setText(null);
+				artistTF.setText(null);
+				albumTF.setText(null);
+				yearTF.setText(null);
+				
+				display.setText("Details");
+				list.setSelectedIndex(0);
+				
+			}
 			list.setListData(sName);
 		}
 	}
 
-	public void loadFromFile(String filename) throws IOException{
-		boolean success = false;
-		try(BufferedInputStream file = new BufferedInputStream(new FileInputStream(filename));
-				ObjectInput in = new ObjectInputStream(file);){
-			Collections.addAll(Song, (Song[]))
-		}
+	//public static void main(String[] args){
 
-	}
-	public static void main(String[] args) throws IOException{
-
-		SongGUI sg = new SongGUI();
-		
-		
-		FileWriter fwriter = new FileWriter("retrieve.txt",true);
-		PrintWriter outputFile = new PrintWriter("retrieve.txt");
-		outputFile.println();
-		File file1 = new File("retrieve.txt");
-		try{
-			Scanner fop = new Scanner(file1);
-			
-		}catch(Exception e){
-			System.out.println(e);
-		}
-		//PrintWriter writer = new PrintWriter("retrive.txt","UTF-8");
-		
-	}
-	
+		//new SongGUI();
+	//}
 	public void copying(){
 		str1 = Arrays.copyOf(slist.toArray(slist), slist.toArray(slist).length);
 		
@@ -388,6 +435,23 @@ public class SongGUI extends tmp {
 			sYear[e1] = str1[count+3];
 			//System.out.println(sArtist[e1]);
 		}
+	}
+	
+	public boolean alreadyThere(String x,String y)
+	{
+		
+		if(x!= null && y!=null)
+		{
+			for(int i=0; sName.length != i; i++)
+			{
+				if(x.equals(sName[i]) && y.equals(sArtist[i])){
+				    return false;
+				}
+			}
+			return true;
+		}else{return true;}	
+		
+		
 	}
 	/*
 	public boolean duplicate(Song tmp){
@@ -428,7 +492,123 @@ public class SongGUI extends tmp {
 		artistTF.setText(sArtist[counting]); 
 		albumTF.setText(sAlbum[counting]);
 		yearTF.setText(sYear[counting]);
+		
+		display.setText("Name of the song is " + nameTF.getText() + "                Name of the artist is " + artistTF.getText() + "           Album: " + albumTF.getText() + "           Year: " + yearTF.getText());
 	}
+	
+   public void loadDefaultDetails(){
+			 
+		nameTF.setText(sName[0]);
+		artistTF.setText(sArtist[0]); 
+		albumTF.setText(sAlbum[0]);
+		yearTF.setText(sYear[0]);
+	}
+	
+	
+	/*{ 
+		BufferedReader reader;
+
+      try {
+    	  reader = openFile(fileName);
+
+        } catch (IOException e) {
+
+            System.out.println(e.getMessage());
+
+            return;
+
+        }
+
+ 
+
+        String fileContents;
+
+        try {
+
+            fileContents = readFile(reader);
+
+        } catch (IOException e) {
+
+            System.out.println("Error reading file: " + e.getMessage());
+
+            return;
+
+        }
+
+ 
+
+        tmp = readObjects(fileContents);
+
+        System.out.println(tmp);
+
+    }
+
+ 
+    private static BufferedReader openFile(String fileName) throws IOException {
+
+        try {
+
+            return new BufferedReader(new FileReader(fileName));
+
+        } catch (FileNotFoundException e) {
+
+            throw new IOException("File [name=" + fileName + "] not found.", e);
+
+        }
+
+    }
+
+ 
+
+    private static String readFile(BufferedReader reader) throws IOException {
+
+        StringBuffer sb = new StringBuffer();
+
+        String line;
+
+        while ((line = reader.readLine()) != null) {
+
+            sb.append(line);
+
+        }
+
+ 
+
+        return sb.toString();
+
+    }
+
+ 
+
+    private static tmp<Song> readObjects(String fileContents) {
+
+        String[] parts = fileContents.split(Character.toString('\0'));
+
+ 
+
+        LinkedList<Song> tmp = new LinkedList<Song>();
+
+        for (int i = 0,e1 = 0; length = parts.length; i < length; i+=4,e1++) {
+
+            sName[e1] = str1[count];
+			sArtist[e1] = str1[count+1];
+			sAlbum[e1] = str1[count+2];
+			sYear[e1] = str1[count+3];
+
+            Song tmp = new Song(name, artists);
+
+            tmp.add(Song);
+
+        }
+
+ 
+
+        return tmp;
+
+    }
+    */
+
+ 
 	public String[] parray(Object[] Array) {
 		Object[] oarray = Array;
 		String[] stringArray = Arrays.copyOf(oarray,oarray.length, String[].class);
@@ -439,4 +619,3 @@ public class SongGUI extends tmp {
 		return stringArray;
 }
 }
-
