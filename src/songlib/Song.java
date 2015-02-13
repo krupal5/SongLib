@@ -1,5 +1,6 @@
 package songlib;
 import java.util.Collections;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,14 +19,14 @@ public class Song extends LinkedList implements Comparable<Song> {
 			return 1;
 		}else if ((str.compareTo(this.name))<0){
 			return -1;
-		}else if((str.compareTo(this.name)) == 0){
+		}/*else if((str.compareTo(this.name)) == 0){
 			if((str2.compareTo(this.artists)) > 0) {
 				return 1;
 			}
 			else if ((str.compareTo(this.name))<0){
 				return -1;
 			}
-		}
+		}*/
 		return 0;
 	}
 	public Song(String name,String artists){

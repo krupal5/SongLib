@@ -40,7 +40,12 @@ public class SongGUI extends tmp {
 	JButton add, delete, edit;
 	tmp<Song> slist = new tmp<Song>();
 	ListIterator<Song> literator = slist.listIterator();
-	
+	String[] str1 = new String[100];
+	String[] sName = new String[1000];
+	String[] sAlbum = new String[1000];
+	String[] sArtist = new String[1000];
+	String[] sYear = new String[1000];
+
 	int count = 0;
 	
 	JPanel bPanel, tNamePanel, tArtistPanel, tAlbumPanel, tYearPanel,  dPanel, labelP, listP, headP, bothP;
@@ -210,59 +215,45 @@ public class SongGUI extends tmp {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// TODO Auto-generated method stub
-			String selection = (String) list.getSelectedValue();
-			nameTF.setText(selection);
+			getSelected();
+			//String selection = (String) list.getSelectedValue();
+			//nameTF.setText(selection);
 		}
 	}
-	
+	public void getSelected(){
+		int count = list.getSelectedIndex();
+		nameTF.setText(sName[count]);
+	}
+
 	private class AddBTNListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			Song tmp = new Song(nameTF.getText(),artistTF.getText());
-			String[] str1 = new String[100];
-			String[] sName = new String[100];
-			String[] sAlbum = new String[100];
-			String[] sArtist = new String[100];
-			String[] sYear = new String[100];
-		
-			
 			tmp.setAlbum(albumTF.getText());
 			tmp.setYear(yearTF.getText());
-//			String[] str2 = new String[10];
+		/*	boolean check = duplicate(tmp);
+			if(check == true){
+				System.out.println("its duplicate");
+			}
+			if(check == false){
 			slist.add(tmp);
-			
-			
-			//Song tmp2 = new Song(nameTF.getText(), artistTF.getText());
-			//slist.add(tmp2);
-			//System.out.println("YAY !!! it works" + tmp.name);
-						
-			/*for (int i = 0; str2.length != i;i++){
-			str2[i] = str1[i];
-				}*/
-			
-			//str1 = slist.toArray(slist);
-			//for(int i =0; slist.toArray(slist).length != i ; i++){
-				//str1[i] = slist.toArray(slist)[i];
-			//}
+			}*/
+			slist.add(tmp);
+			Collections.sort(slist, Collections.reverseOrder());
 			
 			str1 = Arrays.copyOf(slist.toArray(slist), slist.toArray(slist).length);
-	//		int j = str1.length;
-			//System.out.println(j);
 			
-			for(int count =0; str1.length != count;count+=4){
-				sName[count] = str1[count];
-				sArtist[count] = str1[count+1];
-				sAlbum[count] = str1[count+2];
-				sYear[count] = str1[count+3];
+			
+			for(int count = 0,e1 = 0; str1.length != count;count+=4, e1++){
+				sName[e1] = str1[count];
+				sArtist[e1] = str1[count+1];
+				sAlbum[e1] = str1[count+2];
+				sYear[e1] = str1[count+3];
+				//System.out.println(sArtist[e1]);
 			}
-			//str2[count] = str1[count];
-			//str2[1] = str1[1];
-			//for(int i =0,count = 0; 10 < count; count = count +4 , i++){
-				//sName[i] = str1[count];
-			//}
-			//System.out.println(sName[0]);
+		
 			list.setListData(sName);
-			System.out.println(sName[1]);
+			//System.out.println(sName[1]);
 			
 			
 			//System.out.println(str2[count]);
@@ -274,11 +265,7 @@ public class SongGUI extends tmp {
 		public void actionPerformed(ActionEvent e) {
 			
 			if(list.getSelectedIndex() != -1){
-				//String s1 = new String();
-				//s1 = list.getSelectedValue().toString();
-				//if(list.getSelectedValue().equals(slist.contains(s1))){
-					
-			//	}
+				loaddetails();
 				Song tmp = new Song(nameTF.getText(),artistTF.getText());
 				String[] str1 = new String[10];
 				
@@ -317,24 +304,47 @@ public class SongGUI extends tmp {
 				if((list.getSelectedValue().equals(slist.))){
 					slist.remove();
 				}
-				slist.iterator().next();
+				slist.iterator().next();d
 				}
 				
 			}*/
 			if(list.getSelectedIndex() != -1){
-				String s1 = new String();
-				s1 = list.getSelectedValue().toString();
+				//String s1 = new String();
+				//s1 = list.getSelectedValue().toString();
 				//if(list.getSelectedValue().equals(slist.contains(s1))){
 					slist.remove(list.getSelectedIndex());
+					
+					toFalse();
+					
+				
 			//	}
-				list.setListData(slist.toArray(slist));
 			}
+			list.setListData(slist.toArray(sName));
 		}
 	}
+
 	public static void main(String[] args){
 
 		new SongGUI();
 	}
+	/*
+	public boolean duplicate(Song tmp){
+		while(literator.hasNext()){
+			if(tmp.name == literator.next().name){
+				if(tmp.name == literator.next().artists){
+					return true;
+				}
+			}
+		}
+		return false;
+	}*/
+	public void toFalse(){
+		nameTF.setText(null);
+		artistTF.setText(null);
+		albumTF.setText(null);
+		yearTF.setText(null);
+	}
+
 	/*
 	@Override
 	public String[] toArray(){
@@ -349,6 +359,11 @@ public class SongGUI extends tmp {
 		return listdata;
 	}
 	*/
+	public void loaddetails(){
+		String s1 = (String) list.getSelectedValue();
+		System.out.println(s1);
+		
+	}
 	public String[] parray(Object[] Array) {
 		Object[] oarray = Array;
 		String[] stringArray = Arrays.copyOf(oarray,oarray.length, String[].class);
