@@ -215,7 +215,7 @@ public class SongGUI extends tmp {
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			// TODO Auto-generated method stub
-			getSelected();
+		//	getSelected();
 			//String selection = (String) list.getSelectedValue();
 			//nameTF.setText(selection);
 		}
@@ -309,17 +309,30 @@ public class SongGUI extends tmp {
 				
 			}*/
 			if(list.getSelectedIndex() != -1){
-				//String s1 = new String();
-				//s1 = list.getSelectedValue().toString();
-				//if(list.getSelectedValue().equals(slist.contains(s1))){
+				/*String s1 = new String();
+				s1 = list.getSelectedValue().toString();
+				if(list.getSelectedValue().equals(slist.contains(s1))){
 					slist.remove(list.getSelectedIndex());
 					
 					toFalse();
 					
 				
-			//	}
+				}*/
+				//int x = list.getSelectedIndex();
+				//System.out.println(x);
 			}
-			list.setListData(slist.toArray(sName));
+				slist.remove(list.getSelectedIndex());
+				str1 = Arrays.copyOf(slist.toArray(slist), slist.toArray(slist).length);
+				
+				
+				for(int count = 0,e1 = 0; str1.length != count;count+=4, e1++){
+					sName[e1] = str1[count];
+					sArtist[e1] = str1[count+1];
+					sAlbum[e1] = str1[count+2];
+					sYear[e1] = str1[count+3];
+					//System.out.println(sArtist[e1]);
+				}
+			list.setListData(sName);
 		}
 	}
 
